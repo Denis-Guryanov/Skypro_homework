@@ -32,4 +32,5 @@ def sort_by_date(list_on_date: list[dict], reverse: bool = True) -> list[dict]:
 
     for date_object, item in date_items:
         sorted_data.append(item)
+
     return sorted_data
