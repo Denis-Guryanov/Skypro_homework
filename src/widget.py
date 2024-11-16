@@ -7,7 +7,7 @@ def mask_account_card(card_ifo: str) -> str:
     '''Функция принимает на вход номер счета или карты с назвванием и возвращает название и замаскированый номер'''
     parts = card_ifo.rsplit(" ", 1)
     if len(parts) < 2:
-        return "Некоректный ввод"
+        return "Некорректный ввод"
     card_name = parts[0]
     card_number = parts[1]
     if len(card_number) == 16:
