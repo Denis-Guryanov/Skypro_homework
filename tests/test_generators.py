@@ -1,6 +1,6 @@
 import pytest
 
-from src.generators import card_number_generator, filter_by_currency, transaction_descriptions, transactions
+from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 
 
 @pytest.fixture
@@ -9,47 +9,62 @@ def test_filter_by_currency_currency(trans_list, currency):
         assert filter_by_currency(trans.get("operationAmount").get("currency").get("name")) == currency
 
 
-def test_filter_by_currency():
-    """Функция для тестирования функции операций по валюте"""
-    result = filter_by_currency(transactions, "USD")
-    assert next(result) == {
-          "id": 939719570,
-          "state": "EXECUTED",
-          "date": "2018-06-30T02:08:58.425572",
-          "operationAmount": {
-              "amount": "9824.07",
-              "currency": {
-                  "name": "USD",
-                  "code": "USD"
-              }
-          },
-          "description": "Перевод организации",
-          "from": "Счет 75106830613657916952",
-          "to": "Счет 11776614605963066702"
-      }
+def test_filter_by_currency_without_currency_code():
+    """
+    Если в транзакции отсутствует код транзакции,
+    то она не учитывается при фильтрации.
+    """
+    transaction_without_currency_code = _create_transaction(1, 'USD')
+    transaction_without_currency_code['operationAmount']['currency'].pop('code')
+
+    gen = filter_by_currency([transaction_without_currency_code], 'USD')
+
+    assert list(gen) == []
 
 
-if __name__ == '__main__':
-    with pytest.raises(StopIteration):
-        filter_by_currency([], "USD")
+def test_filter_by_currency_returns_only_transactions_with_specified_currency_code():
+    """
+    Возвращаются только транзации с указанным кодом валюты.
+    """
+    rub_transactions = [
+        _create_transaction(1, "RUB"), _create_transaction(2, "RUB")
+    ]
+    usd_transactions = [
+        _create_transaction(3, "USD"), _create_transaction(4, "USD")
+    ]
+    aed_transactions = [
+        _create_transaction(5, "AED"), _create_transaction(6, "AED")
+    ]
+    transactions = [*rub_transactions, *usd_transactions, *aed_transactions]
+
+    gen = filter_by_currency(transactions, 'USD')
+
+    assert list(gen) == usd_transactions
 
 
-if __name__ == '__main__':
-    with pytest.raises(StopIteration):
-        filter_by_currency(transactions, "")
+def test_filter_by_currency_no_transactions():
+    """
+    Если передать пустой список транзакций, то вернется пустой список.
+    """
+    gen = filter_by_currency([], 'USD')
+    assert list(gen) == []
 
 
-@pytest.mark.parametrize("descrip", [("Перевод организации")])
-def test_transaction_descriptions(descrip):
-    """Функция для тестирования функции, формирующей список описания операций"""
-    result_descriptions = transaction_descriptions(transactions)
-    assert next(result_descriptions) == descrip
+def _create_transaction(transaction_id: int, currency_code: str) -> dict:
+    return {
+        "id": transaction_id,
+        "operationAmount": {"amount": "100.0", "currency": {"name": "руб.", "code": currency_code}},
+    }
 
 
-if __name__ == '__main__':
-    with pytest.raises(StopIteration):
-        transaction_descriptions([])
-
+@pytest.mark.parametrize("transactions, expected", [
+    ([], []),
+    ([{"description": "Перевод"}, {"description": "Покупка"}], ["Перевод", "Покупка"]),
+    ([{"description": "Снятие наличных"}, {"amount": 100}], ["Снятие наличных"]),
+    ([{"amount": 100}], []),
+])
+def test_transaction_descriptions(transactions, expected):
+    assert list(transaction_descriptions(transactions)) == expected
 
 def test_card_number_generator():
     """Функция для тестирования генератора, формирующего номера банковских карт в определенном формате"""
