@@ -68,14 +68,5 @@ def test_transaction_descriptions(transactions, expected):
 
 def test_card_number_generator():
     """Функция для тестирования генератора, формирующего номера банковских карт в определенном формате"""
-    card_number = card_number_generator(1, 9999)
-    assert next(card_number) == "0000 0000 0000 0001"
-    assert next(card_number) == "0000 0000 0000 0002"
-    assert next(card_number) == "0000 0000 0000 0003"
-    assert next(card_number) == "0000 0000 0000 0004"
-    assert next(card_number) == "0000 0000 0000 0005"
-    assert next(card_number) == "0000 0000 0000 0006"
-    assert next(card_number) == "0000 0000 0000 0007"
-    assert next(card_number) == "0000 0000 0000 0008"
-    assert next(card_number) == "0000 0000 0000 0009"
-    assert next(card_number) == "0000 0000 0000 0010"
+    cards = card_number_generator(10, 12)
+    assert list(cards) == ["0000 0000 0000 0010", "0000 0000 0000 0011", "0000 0000 0000 0012"]

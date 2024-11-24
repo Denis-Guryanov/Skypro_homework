@@ -1,4 +1,7 @@
-def filter_by_currency(transactions: list[dict], currency: str) -> list[dict]:
+from typing_extensions import Iterable
+
+
+def filter_by_currency(transactions: list[dict], currency: str) -> Iterable[dict]:
     """Функция, которая выдает транзакции, где валюта операции соответствует заданной."""
     for transaction in transactions:
         try:
@@ -10,14 +13,14 @@ def filter_by_currency(transactions: list[dict], currency: str) -> list[dict]:
             yield transaction
 
 
-def transaction_descriptions(transactions: list[dict]) ->str:
+def transaction_descriptions(transactions: list[dict]) ->Iterable[str]:
     """Функция генератор возвращающая описание каждой операции по очереди"""
     for transaction in transactions:
         if "description" in transaction:
             yield transaction["description"]
 
 
-def card_number_generator(initial_number: int, final_number: int) -> str:
+def card_number_generator(initial_number: int, final_number: int) -> Iterable[str]:
     """Функция генератор генерирующая номера банковских карт"""
     for number in range(initial_number, final_number + 1):
         card_number = str(number)
