@@ -1,14 +1,6 @@
 import pytest
 
 from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
-
-
-@pytest.fixture
-def test_filter_by_currency_currency(trans_list, currency):
-    for trans in trans_list:
-        assert filter_by_currency(trans.get("operationAmount").get("currency").get("name")) == currency
-
-
 def test_filter_by_currency_without_currency_code():
     """
     Если в транзакции отсутствует код транзакции,
