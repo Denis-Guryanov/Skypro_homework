@@ -4,7 +4,7 @@ from src.masks import get_mask_account, get_mask_card_number
 
 
 def mask_account_card(card_ifo: str) -> str:
-    '''Функция принимает на вход номер счета или карты с назвванием и возвращает название и замаскированый номер'''
+    """Функция принимает на вход номер счета или карты с назвванием и возвращает название и замаскированый номер"""
     parts = card_ifo.rsplit(" ", 1)
     if len(parts) < 2:
         return "Некорректный ввод"
@@ -19,6 +19,6 @@ def mask_account_card(card_ifo: str) -> str:
 
 
 def get_date(date_info: str) -> str:
-    '''Функция принимает на вход дату в формате год-месяц-дату и время и возвращает дату в формате ДД.ММ.ГГГГ'''
+    """Функция принимает на вход дату в формате год-месяц-дату и время и возвращает дату в формате ДД.ММ.ГГГГ"""
     date_obj = datetime.strptime(date_info, "%Y-%m-%dT%H:%M:%S.%f")
     return date_obj.strftime("%d.%m.%Y")

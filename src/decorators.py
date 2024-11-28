@@ -1,16 +1,16 @@
 from functools import wraps
-from time import time
+from typing import Any, Callable, Optional
 
-def log(filename=None):
-    def decorator_func(func):
+
+def log(filename: Optional[str] = None) -> Callable:
+    """Декоратор логирующий начало и конец функции, а так же ее результаты и возникшие ошибки"""
+
+    def decorator_func(func: Callable) -> Callable:
         @wraps(func)
-        def wrapper(*args, **kwargs):
-            start_time = time()
+        def wrapper(*args: Any, **kwargs: Any) -> Optional[Any]:
             try:
                 result = func(*args, **kwargs)
-                end_time = time()
-                execution_time = end_time - start_time
-                message = f"{func.__name__} OK, Execution time: {execution_time:.4f} seconds\n"
+                message = f"{func.__name__} OK\n"
                 if filename:
                     with open(filename, "a", encoding="utf-8") as file:
                         file.write(message)
@@ -23,8 +23,9 @@ def log(filename=None):
                         file.write(error_message)
                 else:
                     print(error_message)
-                return None
+                raise
             return result
-        return wrapper
-    return decorator_func
 
+        return wrapper
+
+    return decorator_func

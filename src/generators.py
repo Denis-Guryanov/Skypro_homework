@@ -13,7 +13,7 @@ def filter_by_currency(transactions: list[dict], currency: str) -> Iterable[dict
             yield transaction
 
 
-def transaction_descriptions(transactions: list[dict]) ->Iterable[str]:
+def transaction_descriptions(transactions: list[dict]) -> Iterable[str]:
     """Функция генератор возвращающая описание каждой операции по очереди"""
     for transaction in transactions:
         if "description" in transaction:
