@@ -1,8 +1,9 @@
+from typing import Any, Dict, Generator, List
+
 import pytest
 
 from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 
-from typing import List, Dict, Generator, Any
 
 def test_filter_by_currency_without_currency_code() -> None:
     """
