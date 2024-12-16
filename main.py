@@ -1,14 +1,16 @@
-
+import os
 from src.transaction_csv_pandas import read_csv, read_excel
 from src.generators import filter_by_currency
 from src.processing import filter_by_state, sort_by_date
 from src.utils import get_operation_transaction
 from src.with_re import search_description
 
-
-json_path = "C:\\Users\\gurya\\PycharmProjects\\Skypro_homework\\date\\operations.json"
-excel_path = "C:\\Users\\gurya\\PycharmProjects\\Skypro_homework\\date\\transaction.xlsx"
-csv_path = "C:\\Users\\gurya\\PycharmProjects\\Skypro_homework\\date\\transactions.csv"
+relative_path_json ="C:\\Users\\gurya\\PycharmProjects\\Skypro_homework\\date\\operations.json"
+relative_path_excel ="C:\\Users\\gurya\\PycharmProjects\\Skypro_homework\\date\\transaction.xlsx"
+relative_path_csv ="C:\\Users\\gurya\\PycharmProjects\\Skypro_homework\\date\\transactions.csv"
+json_path = os.path.abspath(relative_path_json)
+excel_path = os.path.abspath(relative_path_excel)
+csv_path = os.path.abspath(relative_path_csv)
 
 
 def get_transactions_from_file() -> list[dict]:
