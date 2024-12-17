@@ -3,10 +3,9 @@ from unittest.mock import mock_open, patch
 
 import pytest
 
-from src.utils import get_operation_transaction, transactions_sum  # Замените на реальный модуль
+from src.utils import get_operation_transaction
 
 
-# Тесты для функции get_operation_transaction
 @pytest.mark.parametrize(
     "file_path, mock_json, expected",
     [
@@ -31,7 +30,6 @@ def test_get_operation_transaction(mock_open, file_path, mock_json, expected):
         assert result == expected
 
 
-# Тесты для функции transactions_sum
 @pytest.mark.parametrize(
     "transactions, mock_currency_response, expected_sum",
     [
@@ -39,22 +37,21 @@ def test_get_operation_transaction(mock_open, file_path, mock_json, expected):
             [{"operationAmount": {"currency": {"code": "RUB"}, "amount": 100}}],
             {"result": 100},
             100.00,
-        ),  # Транзакция в RUB
+        ),
         (
             [{"operationAmount": {"currency": {"code": "USD"}, "amount": 50}}],
             {"result": 4000},
             4000.00,
-        ),  # 50 USD = 4000 RUB
+        ),
         (
             [{"operationAmount": {"currency": {"code": "EUR"}, "amount": 80}}],
             {"result": 7000},
             7000.00,
-        ),  # 80 EUR = 7000 RUB
+        ),
     ],
 )
 @patch("src.external_api.get_currency")
 def test_transactions_sum(mock_get_currency, transactions, mock_currency_response, expected_sum):
-    # Здесь мы используем mock_currency_response для возврата нужных значений
     mock_get_currency.return_value = mock_currency_response["result"]
 
     assert mock_currency_response["result"]
