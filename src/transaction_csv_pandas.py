@@ -5,7 +5,9 @@ import pandas as pd
 
 logger = logging.getLogger("transaction_csv_pandas")
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-handler = logging.FileHandler("logs/transaction_csv_pandas.log", mode="w", encoding="utf-8")
+handler = logging.FileHandler(
+    "C:\\Users\\gurya\\PycharmProjects\\Skypro_homework\\logs\\transaction_csv_pandas.log", mode="w", encoding="utf-8"
+)
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
